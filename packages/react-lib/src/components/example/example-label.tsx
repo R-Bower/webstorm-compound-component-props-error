@@ -1,11 +1,31 @@
 import type {ReactElement} from "react"
+import type {As, PolymorphicComponentPropsWithRef} from "../../system"
 
-export interface ExampleLabelProps {
-  label: string
+/**
+ * @public
+ * @interface
+ */
+export type ExampleLabelProps<C extends As = "div"> =
+  PolymorphicComponentPropsWithRef<
+    C,
+    {
+      /**
+       * The component used for the root node. It can be a React component or element.
+       * @default 'div'
+       */
+      as?: C
 
-  optionalProp?: string
-}
+      label?: string
 
-export function ExampleLabel({label}: ExampleLabelProps): ReactElement {
-  return <div>{label}</div>
+      optionalProp?: string
+    }
+  >
+
+export function ExampleLabel<C extends As = "div">({
+  as,
+  label,
+  ...props
+}: ExampleLabelProps<C>): ReactElement {
+  const Element = as || "div"
+  return <Element {...props}>{label}</Element>
 }

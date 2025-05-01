@@ -1,14 +1,29 @@
-import type {ReactElement, ReactNode} from "react"
+import type {ReactElement} from "react"
+import type {As, PolymorphicComponentPropsWithRef} from "../../system"
 
-export interface ExampleRootProps {
-  /**
-   * React {@link https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children children} prop.
-   */
-  children?: ReactNode
+/**
+ * @public
+ * @interface
+ */
+export type ExampleRootProps<C extends As = "div"> =
+  PolymorphicComponentPropsWithRef<
+    C,
+    {
+      /**
+       * The component used for the root node. It can be a React component or element.
+       * @default 'div'
+       */
+      as?: C
 
-  someProp: string
-}
+      someProp: string
+    }
+  >
 
-export function ExampleRoot({someProp}: ExampleRootProps): ReactElement {
-  return <div>{someProp}</div>
+export function ExampleRoot<C extends As = "div">({
+  as,
+  someProp,
+  ...props
+}: ExampleRootProps<C>): ReactElement {
+  const Element = as || "div"
+  return <Element {...props}>{someProp}</Element>
 }
